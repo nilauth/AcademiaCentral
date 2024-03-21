@@ -34,7 +34,9 @@ export function StudentLogin() {
   useEffect(() => {
     const fetchCSRFToken = async () => {
       try {
-        await axiosClient.get("/sanctum/csrf-cookie");
+        await axiosClient.get("/sanctum/csrf-cookie", {
+          baseURL: import.meta.env.VITE_BACKEND_URL,
+        });
       } catch (error) {
         console.error("Failed to fetch CSRF token:", error);
       }
@@ -49,6 +51,7 @@ export function StudentLogin() {
       .post("/login", values)
       .then((value) => {
         if (value.status === 204) {
+          window.localStorage.setItem("ACCESS_TOKEN", "test");
           navigate("/student/dashboard");
         }
       })
